@@ -1,7 +1,4 @@
-//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by Fernflower decompiler)
-//
+
 
 package framework;
 
@@ -20,6 +17,8 @@ public class DarkSkyLandingPage extends BasePage {
     private By todaysTimeline = By.xpath("//body[@class='forecast']/div[@id='week']/a[1]/span[3]/span[1]/*[1]");
     private By lowTempToday = By.xpath("/html[1]/body[1]/div[6]/a[1]/span[2]/span[1]");
     private By highTempToday = By.xpath("/html[1]/body[1]/div[6]/a[1]/span[2]/span[3]");
+
+    CalendarActions calendarActions = new CalendarActions();
 
     @Step
     public void clickOnSearchField() {
@@ -44,9 +43,9 @@ public class DarkSkyLandingPage extends BasePage {
         } catch (InterruptedException var4) {
             var4.printStackTrace();
         }
-        int temp = converTextIntoInt(currentTemperature, 0, 2);
-        int tempLow = converTextIntoInt(lowTemperature, 5, 7);
-        int tempHigh = converTextIntoInt(highTemperature, 6, 8);
+        int temp = calendarActions.converTextIntoInt(currentTemperature, 0, 2);
+        int tempLow = calendarActions.converTextIntoInt(lowTemperature, 5, 7);
+        int tempHigh = calendarActions.converTextIntoInt(highTemperature, 6, 8);
         if (temp >= tempLow && temp <= tempHigh) {
             System.out.println("The current temperature is between low and high value");
         } else {
@@ -55,7 +54,7 @@ public class DarkSkyLandingPage extends BasePage {
     }
 
     public void verifyTimeline(int hour) {
-        Assert.assertEquals(getCurrentTime(hour), getHoursFromTimeline(timeLine), "The element are not equal");
+        Assert.assertEquals(calendarActions.getCurrentTime(hour), calendarActions.getHoursFromTimeline(timeLine), "The element are not equal");
         System.out.println("Timeline is displayed with 2 hours incremented");
     }
 
