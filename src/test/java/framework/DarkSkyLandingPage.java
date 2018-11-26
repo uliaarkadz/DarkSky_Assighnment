@@ -17,22 +17,24 @@ public class DarkSkyLandingPage extends BasePage {
     private By lowTempToday = By.xpath("/html[1]/body[1]/div[6]/a[1]/span[2]/span[1]");
     private By highTempToday = By.xpath("/html[1]/body[1]/div[6]/a[1]/span[2]/span[3]");
 
+    CalendarActions calendarActions = new CalendarActions();
+
 
     @Step
     public void clickOnSearchField() {
-        this.clickOn(this.searchField);
+        clickOn(searchField);
     }
 
     public void clearSearchField() {
-        this.clearTextField(this.searchField);
+        clearTextField(searchField);
     }
 
     public void enterZipCode(String zip) {
-        this.sendText(this.searchField, zip);
+        sendText(searchField, zip);
     }
 
     public void clickOnMagnifyingGlass() {
-        this.clickOn(this.magniFyingGlass);
+        clickOn(magniFyingGlass);
     }
 
     public void verifyCurrentTemperature() {
@@ -42,9 +44,9 @@ public class DarkSkyLandingPage extends BasePage {
             var4.printStackTrace();
         }
 
-        int temp = this.converTextIntoInt(this.currentTemperature, 0, 2);
-        int tempLow = this.converTextIntoInt(this.lowTemperature, 5, 7);
-        int tempHigh = this.converTextIntoInt(this.highTemperature, 6, 8);
+        int temp = calendarActions.converTextIntoInt(currentTemperature, 0, 2);
+        int tempLow = calendarActions.converTextIntoInt(lowTemperature, 5, 7);
+        int tempHigh = calendarActions.converTextIntoInt(highTemperature, 6, 8);
         if (temp >= tempLow && temp <= tempHigh) {
             System.out.println("The current temperature is between low and high value");
         } else {
@@ -54,22 +56,22 @@ public class DarkSkyLandingPage extends BasePage {
     }
 
     public void verifyTimeline(int hour) {
-        Assert.assertEquals(this.getCurrentTime(hour), this.getHoursFromTimeline(this.timeLine), "The element are not equal");
+        Assert.assertEquals(calendarActions.getCurrentTime(hour), calendarActions.getHoursFromTimeline(timeLine), "The element are not equal");
         System.out.println("Timeline is displayed with 2 hours incremented");
     }
 
     public void expandTodaysTimeline() throws InterruptedException {
         Thread.sleep(4000L);
-        scrollOnThePage();
-        this.clickOn(this.todaysTimeline);
+        calendarActions.scrollOnThePage();
+        this.clickOn(todaysTimeline);
     }
 
     public void verifyTodaysTimelineTemp() {
-        int tempLowTimeline = this.converTextIntoInt(this.lowTemperature, 5, 7);
-        int tempHighTimeline = this.converTextIntoInt(this.highTemperature, 6, 8);
+        int tempLowTimeline = calendarActions.converTextIntoInt(lowTemperature, 5, 7);
+        int tempHighTimeline = calendarActions.converTextIntoInt(highTemperature, 6, 8);
 
-        int tempLowToday = this.converTextIntoInt(this.lowTempToday, 0, 2);
-        int tempHighToday = this.converTextIntoInt(this.highTempToday, 0, 2);
+        int tempLowToday = calendarActions.converTextIntoInt(lowTempToday, 0, 2);
+        int tempHighToday = calendarActions.converTextIntoInt(highTempToday, 0, 2);
 
         Assert.assertTrue(tempLowToday == tempLowTimeline || tempHighTimeline == tempHighToday, "Lowest and highest temp is displayed correctly");
     }
