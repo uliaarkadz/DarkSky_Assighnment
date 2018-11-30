@@ -25,4 +25,25 @@ public class HerokuSD {
         herokuLandingPage.verifySearchText(title);
     }
 
+    @Then("^I verify (.+) total post is displayed$")
+    public void verifyTotalNumberOfPosts(int gigs) {
+        herokuLandingPage.verifyTotalNumberOfGigs(gigs);
+    }
+
+    @Then("^I verify all post has price tag$")
+    public void verifyPrice() {
+        herokuLandingPage.verifyPriceForEachGig();
+    }
+
+    @Then("^I verify all post has title$")
+    public void verifyPrices() {
+        herokuLandingPage.verifyTitles();
+    }
+
+    @Then("^I verify all post has displayed image$")
+    public void verifyImages() {
+        herokuLandingPage.verifyImages();
+    }
+
+
 }
