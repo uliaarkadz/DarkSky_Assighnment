@@ -20,3 +20,22 @@ Feature: Verify auto complete search result
     And I verify all post has price tag
     And I verify all post has title
     And  I verify all post has displayed image
+
+  @heroku-invalid-email
+  Scenario Outline: Verify invalid email on registration
+    Given I am on Registration page
+    When I enter name as testuser email as <email> password as test12345
+    And I click 'submit' button
+    Then  I verify invalid email address
+
+    Examples:
+      | email              |
+      | test.com           |
+      | test@test@test.com |
+
+  @heroku-newuser
+  Scenario: Verify a new user can register with a valid email address
+    Given I am on Registration page
+    When I enter name as testuser email as test@test.com password as test12345
+    And I click 'submit' button
+    Then  I am signed-in as a new user

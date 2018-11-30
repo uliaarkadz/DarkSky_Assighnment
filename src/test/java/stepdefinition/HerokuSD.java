@@ -45,5 +45,30 @@ public class HerokuSD {
         herokuLandingPage.verifyImages();
     }
 
+    @Given("^I am on Registration page$")
+    public void goToRegistrationPage() {
+        herokuLandingPage.clickOnJoinButton();
+    }
+
+    @When("^I enter name as (.+) email as (.+) password as (.+)$")
+    public void enterRegistrationData(String name, String email, String password) {
+        herokuLandingPage.registration(name, email, password);
+    }
+
+    @When("^I click 'submit' button$")
+    public void clickSubmit() {
+        herokuLandingPage.clickSubmitOnRegPage();
+    }
+
+    @Then("^I verify invalid email address$")
+    public void verifyInvalidEmail() {
+        herokuLandingPage.verifyInvalidEmail();
+    }
+    @Then("^I am signed-in as a new user$")
+    public void verifyNewUserRegistration() {
+        herokuLandingPage.verifyNewUserRegistration();
+    }
+
+
 
 }
