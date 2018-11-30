@@ -10,6 +10,16 @@ import java.util.*;
 public class CalendarActions extends BasePage{
 
 
+    public void autoComplete(By locator, String text) {
+
+        List<WebElement> list = SharedSD.getDriver().findElements(locator);
+        for (WebElement ele : list) {
+            if (ele.getText().contains(text)) {
+                ele.click();
+                break;}
+        }
+    }
+
     public static void pickDate(By locator, int noOfDays) {
         SimpleDateFormat sdf = new SimpleDateFormat("d");
         Calendar cl = Calendar.getInstance();
@@ -63,12 +73,7 @@ public class CalendarActions extends BasePage{
         }return hourList;
     }
 
-    public static void scrollOnThePage() throws InterruptedException {
-        Thread.sleep(4000L);
-        JavascriptExecutor js = (JavascriptExecutor)SharedSD.getDriver();
-        js.executeScript("window.scrollBy(0,500)", new Object[0]);
-        Thread.sleep(10000L);
-    }
+
 
 }
 

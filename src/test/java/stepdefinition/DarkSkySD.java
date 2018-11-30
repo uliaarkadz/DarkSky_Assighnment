@@ -6,8 +6,8 @@ import cucumber.api.java.en.When;
 import framework.DarkSkyLandingPage;
 
 public class DarkSkySD {
-    private DarkSkyLandingPage lp = new DarkSkyLandingPage();
 
+    private DarkSkyLandingPage lp = new DarkSkyLandingPage();
 
     @Given("^I am on darksky home page$")
     @When("^Clear search text field$")
@@ -40,7 +40,6 @@ public class DarkSkySD {
     public void expandTodaysTimeline() throws InterruptedException {
         lp.expandTodaysTimeline();
     }
-
     @Then("^I verify lowest and highest temp is displayed correctly$")
     public void verifyTodaysTemp() {
         lp.verifyTodaysTimelineTemp();

@@ -14,8 +14,12 @@ public class DarkSkyLandingPage extends BasePage {
     private By highTemperature = By.xpath("//span[@class='summary-high-low']//span[3]");
     private By timeLine = By.xpath("//span[@class='hour']//descendant::*");
     private By todaysTimeline = By.xpath("//body[@class='forecast']/div[@id='week']/a[1]/span[3]/span[1]/*[1]");
-    private By lowTempToday = By.xpath("/html[1]/body[1]/div[6]/a[1]/span[2]/span[1]");
+    private By lowTempToday = By.xpath("//div[@class='dayDetails revealed']//span[@class='highTemp swip']//span[@class='temp']");
     private By highTempToday = By.xpath("/html[1]/body[1]/div[6]/a[1]/span[2]/span[3]");
+
+
+    //a[@class='day revealed']//span[@class='tempRange']//span[@class='minTemp']
+
 
     CalendarActions calendarActions = new CalendarActions();
 
@@ -52,7 +56,6 @@ public class DarkSkyLandingPage extends BasePage {
         } else {
             Assert.fail("The current temperature is above high value");
         }
-
     }
 
     public void verifyTimeline(int hour) {
@@ -62,7 +65,7 @@ public class DarkSkyLandingPage extends BasePage {
 
     public void expandTodaysTimeline() throws InterruptedException {
         Thread.sleep(4000L);
-        calendarActions.scrollOnThePage();
+        scrollOnThePage();
         this.clickOn(todaysTimeline);
     }
 
@@ -73,6 +76,7 @@ public class DarkSkyLandingPage extends BasePage {
         int tempLowToday = calendarActions.converTextIntoInt(lowTempToday, 0, 2);
         int tempHighToday = calendarActions.converTextIntoInt(highTempToday, 0, 2);
 
-        Assert.assertTrue(tempLowToday == tempLowTimeline || tempHighTimeline == tempHighToday, "Lowest and highest temp is displayed correctly");
+        Assert.assertTrue(tempLowToday == tempLowTimeline
+                || tempHighTimeline == tempHighToday, "Lowest and highest temp is displayed correctly");
     }
 }

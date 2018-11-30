@@ -1,20 +1,9 @@
-//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by Fernflower decompiler)
-//
-
 package framework;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
+import java.util.*;
+import org.openqa.selenium.*;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import stepdefinition.SharedSD;
@@ -70,31 +59,10 @@ public class BasePage {
     public void autoComplete(By locator, String destination) {
         List<WebElement> list = SharedSD.getDriver().findElements(locator);
         Iterator var4 = list.iterator();
-
-        while(var4.hasNext()) {
-            WebElement ele = (WebElement)var4.next();
+        while (var4.hasNext()) {
+            WebElement ele = (WebElement) var4.next();
             if (ele.getText().contains(destination)) {
                 ele.click();
-                break;
-            }
-        }
-
-    }
-
-    public static void pickDate(By locator, int noOfDays) {
-        SimpleDateFormat sdf = new SimpleDateFormat("d");
-        Calendar cl = Calendar.getInstance();
-        cl.setTime(new Date());
-        cl.add(5, noOfDays);
-        String futureDate = sdf.format(cl.getTime());
-        List<WebElement> days = SharedSD.getDriver().findElements(locator);
-        Iterator var6 = days.iterator();
-
-        while(var6.hasNext()) {
-            WebElement day = (WebElement)var6.next();
-            String expectedDay = day.getText();
-            if (expectedDay.equals(futureDate)) {
-                day.click();
                 break;
             }
         }
@@ -117,9 +85,36 @@ public class BasePage {
 
     }
 
+    public static void scrollOnThePage() throws InterruptedException {
+        Thread.sleep(4000L);
+        JavascriptExecutor js = (JavascriptExecutor) SharedSD.getDriver();
+        js.executeScript("window.scrollBy(0,500)", new Object[0]);
+        Thread.sleep(10000L);
+    }
 
+    public void actions(By locator) {
+        try {
+            Actions actions = new Actions(SharedSD.getDriver());
+            actions.click(SharedSD.getDriver().findElement(locator));
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
+    }
 
+    public int getElementsCount(By locator) {
+        List<WebElement> list = SharedSD.getDriver().findElements(locator);
+        int sizeOfElements = list.size();
+        return sizeOfElements;
+
+    }
 
 
 }
+
+
+
+
+
+
