@@ -69,6 +69,27 @@ public class HerokuSD {
         herokuLandingPage.verifyNewUserRegistration();
     }
 
+    @Given("^User is on the Threely login page$")
+    public void goToLoginPage() {
+        herokuLandingPage.clickOnSighIn();
+    }
+
+    @When("^I enter username as (.+) and password as (.+)$")
+    public void enterLoginData(String email, String password) {
+        herokuLandingPage.enterLoginData(email, password);
+    }
+
+    @When("^I click on submit button$")
+    public void clickOnSubmitButton() {
+        herokuLandingPage.clickOnSubmitButton();
+    }
+
+    @Then("^I verify logout button is displayed$")
+    public void verifyLogOutButton() throws InterruptedException {
+        herokuLandingPage.verifyLogOuButton();
+    }
+
+
 
 
 }

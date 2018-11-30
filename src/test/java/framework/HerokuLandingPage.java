@@ -19,6 +19,12 @@ public class HerokuLandingPage extends BasePage {
     private By passwordFieldReg = By.xpath("//input[@name='password']");
     private By submitButtonReg = By.xpath("//button[@type='submit']");
     private By alert = By.xpath("//div[@class='alert alert-success alert-dismissible']");
+    private By signInButton = By.xpath("//ul[@class='nav navbar-nav navbar-right']//li[1]");
+    private By emailFieldLogIn = By.xpath("//input[@id='email']");
+    private By passwordFieldLogIn = By.xpath("//input[@id='password']");
+    private By submitButtonLogIn = By.xpath("//button[@type='submit']");
+    private By userIcon = By.xpath("//body/nav[@class='navbar navbar-default navbar-static-top']/div[@class='container']/div[@id='bs-example-navbar-collapse-1']/ul[@class='nav navbar-nav navbar-right']/li[3]/a[1]");
+    private By logOutButton = By.xpath("//ul[@class='dropdown-menu']//li[3]");
 
 
 
@@ -84,6 +90,24 @@ public class HerokuLandingPage extends BasePage {
         }
 
     }
+    public void clickOnSighIn() {
+        clickOn(signInButton);
+    }
 
+    public void enterLoginData(String email, String password) {
+        sendText(emailFieldLogIn, email);
+        sendText(passwordFieldLogIn, password);
+    }
 
+    public void clickOnSubmitButton() {
+        clickOn(submitButtonLogIn);
+    }
+
+    public void verifyLogOuButton() throws InterruptedException {
+        Thread.sleep(5000);
+        clickOn(userIcon);
+        String buttonText = getTextFromElement(logOutButton);
+        String text = "Logout";
+        Assert.assertEquals(buttonText, text, "The logout button is not displayed");
+    }
 }
