@@ -88,7 +88,7 @@ public class BasePage {
     public static void scrollOnThePage() throws InterruptedException {
         Thread.sleep(4000L);
         JavascriptExecutor js = (JavascriptExecutor) SharedSD.getDriver();
-        js.executeScript("window.scrollBy(0,500)", new Object[0]);
+        js.executeScript("window.scrollBy(0,700)", new Object[0]);
         Thread.sleep(10000L);
     }
 
