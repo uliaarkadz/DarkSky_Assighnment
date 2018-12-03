@@ -44,4 +44,12 @@ public class DarkSkySD {
     public void verifyTodaysTemp() {
         lp.verifyTodaysTimelineTemp();
     }
+    @When("^I click on Time Machine$")
+    public void clickOnTimeMachine(){
+        lp.clickOnTimeMachine();
+    }
+    @Then("^I verify date is selected to todays date$")
+    public void verifyTodaysDate() throws InterruptedException {
+        lp.verifyDateTimeMachine();
+    }
 }

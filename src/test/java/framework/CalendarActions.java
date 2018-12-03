@@ -7,7 +7,7 @@ import stepdefinition.SharedSD;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class CalendarActions extends BasePage{
+public class CalendarActions extends BasePage {
 
 
     public void autoComplete(By locator, String text) {
@@ -16,7 +16,8 @@ public class CalendarActions extends BasePage{
         for (WebElement ele : list) {
             if (ele.getText().contains(text)) {
                 ele.click();
-                break;}
+                break;
+            }
         }
     }
 
@@ -37,16 +38,13 @@ public class CalendarActions extends BasePage{
             }
         }
     }
+
     public int converTextIntoInt(By locator, int end, int finish) {
         int convertedValue = 0;
-
-        try {
-            String value = getTextFromElement(locator);
-            String modified = value.substring(end, finish);
-            convertedValue = Integer.parseInt(modified);
-        } catch (NumberFormatException var7) {
-            ;
-        }return convertedValue;
+        String value = getTextFromElement(locator);
+        String modified = value.substring(end, finish);
+        convertedValue = Integer.parseInt(modified);
+        return convertedValue;
     }
 
     public ArrayList<String> getCurrentTime(int hour) {
@@ -60,7 +58,8 @@ public class CalendarActions extends BasePage{
             Date date = cl.getTime();
             String strDate = sdf1.format(date);
             calendar.add(strDate.toLowerCase().replaceAll("\\s", ""));
-        }return calendar;
+        }
+        return calendar;
     }
 
     public List<String> getHoursFromTimeline(By locator) {
@@ -70,10 +69,26 @@ public class CalendarActions extends BasePage{
         for (WebElement hour : hoursWeb) {
             String displayedHours = hour.getText();
             hourList.add(displayedHours);
-        }return hourList;
+        }
+        return hourList;
     }
 
+    public static void dateVerification(By locator) {
+        SimpleDateFormat sdf1 = new SimpleDateFormat("dd");
+        Calendar cl = Calendar.getInstance();
+        Date date = cl.getTime();
+        String strDate = sdf1.format(date);
+        System.out.println("Date " + strDate);
+        List<WebElement> days = SharedSD.getDriver().findElements(locator);
+        for (WebElement day : days) {
+            String expectedDay = day.getText();
+            if (expectedDay.equals(strDate)) {
+                //Assert.assertEquals(expectedDay,strDate, "The date is selected to todays date");
+                break;
+            }
 
+
+        }
+    }
 
 }
-

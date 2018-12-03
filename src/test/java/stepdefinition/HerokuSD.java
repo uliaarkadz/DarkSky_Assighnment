@@ -4,6 +4,7 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import framework.HerokuLandingPage;
+import org.testng.Assert;
 
 public class HerokuSD {
     private HerokuLandingPage herokuLandingPage = new HerokuLandingPage();
@@ -16,7 +17,7 @@ public class HerokuSD {
     }
 
     @When("^I search on top search bar with text (.+)$")
-    public void topBarSearch(String text) throws InterruptedException {
+    public void topBarSearch(String text){
         herokuLandingPage.enterTopSearchField(text);
     }
 
@@ -50,9 +51,14 @@ public class HerokuSD {
         herokuLandingPage.clickOnJoinButton();
     }
 
-    @When("^I enter name as (.+) email as (.+) password as (.+)$")
-    public void enterRegistrationData(String name, String email, String password) {
-        herokuLandingPage.registration(name, email, password);
+    @When("^I enter name as (.+) email as random email password as (.+)$")
+    public void registrationData(String name, String password) {
+        herokuLandingPage.regNewUser(name, password);
+    }
+
+    @When("^I enter name as (.+) email as (.+) password as (.+) in the fields$")
+    public void enterRegistration(String name, String email,  String password) {
+        herokuLandingPage.registrationInvalidEmail(name, email, password);
     }
 
     @When("^I click 'submit' button$")
@@ -64,6 +70,7 @@ public class HerokuSD {
     public void verifyInvalidEmail() {
         herokuLandingPage.verifyInvalidEmail();
     }
+
     @Then("^I am signed-in as a new user$")
     public void verifyNewUserRegistration() {
         herokuLandingPage.verifyNewUserRegistration();
@@ -88,8 +95,5 @@ public class HerokuSD {
     public void verifyLogOutButton() throws InterruptedException {
         herokuLandingPage.verifyLogOuButton();
     }
-
-
-
 
 }

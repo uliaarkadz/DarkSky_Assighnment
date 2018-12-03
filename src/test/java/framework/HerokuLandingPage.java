@@ -1,9 +1,12 @@
 package framework;
 
+import com.github.javafaker.Faker;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import ru.yandex.qatools.allure.annotations.Step;
+
+import java.util.List;
 
 public class HerokuLandingPage extends BasePage {
 
@@ -18,7 +21,7 @@ public class HerokuLandingPage extends BasePage {
     private By emailFieldReg = By.xpath("//input[@name='email']");
     private By passwordFieldReg = By.xpath("//input[@name='password']");
     private By submitButtonReg = By.xpath("//button[@type='submit']");
-    private By alert = By.xpath("//div[@class='alert alert-success alert-dismissible']");
+    private By userName = By.xpath("//li[@class='dropdown open']//ul[@class='dropdown-menu']//li[1]");
     private By signInButton = By.xpath("//ul[@class='nav navbar-nav navbar-right']//li[1]");
     private By emailFieldLogIn = By.xpath("//input[@id='email']");
     private By passwordFieldLogIn = By.xpath("//input[@id='password']");
@@ -27,22 +30,19 @@ public class HerokuLandingPage extends BasePage {
     private By logOutButton = By.xpath("//ul[@class='dropdown-menu']//li[3]");
 
 
-
-    HerokuActions herokuActions = new HerokuActions();
     @Step
     public void clickOnSearchBar() {
         clickOn(topBar);
     }
 
-    public void enterTopSearchField(String text) throws InterruptedException {
+    public void enterTopSearchField(String text) {
         sendText(topBar, text);
-        //Thread.sleep(5000);
     }
 
     public void verifySearchText(String title) {
         actions(autocomplete);
         String titleFromWeb = getTextFromElement(autocomplete);
-        Assert.assertEquals(titleFromWeb, title,"The search text is wrong");
+        Assert.assertEquals(titleFromWeb, title, "The search text is wrong");
     }
 
     public void verifyTotalNumberOfGigs(int gigs) {
@@ -50,21 +50,32 @@ public class HerokuLandingPage extends BasePage {
     }
 
     public void verifyPriceForEachGig() {
-        herokuActions.getContainerElements(priceElement, "$");
+        List<String> price = getContainerElements(priceElement, "$");
+        Assert.assertNotEquals(price.size(), getElementsCount(gigElements), "All gigs have price");
     }
 
     public void verifyTitles() {
-        herokuActions.getContainerElements(postTitle, "");
+        List<String> title = getContainerElements(postTitle, "");
+        Assert.assertNotEquals(title.size(), getElementsCount(gigElements), "All gigs have title");
     }
 
     public void verifyImages() {
-        herokuActions.getAttributeFromElement(postImage, "copywrite.jpg");
+        List<String> images = getAttributeFromElement(postImage, "copywrite.jpg");
+        Assert.assertNotEquals(images.size(), getElementsCount(gigElements), "All post have image");
     }
+
     public void clickOnJoinButton() {
         clickOn(joinButton);
     }
 
-    public void registration(String name, String email, String password) {
+    public void registrationInvalidEmail(String name, String email, String password) {
+        sendText(nameFieldReg, name);
+        sendText(emailFieldReg, email);
+        sendText(passwordFieldReg, password);
+    }
+
+    public void regNewUser(String name, String password) {
+        String email = generateRandomName();
         sendText(nameFieldReg, name);
         sendText(emailFieldReg, email);
         sendText(passwordFieldReg, password);
@@ -75,21 +86,25 @@ public class HerokuLandingPage extends BasePage {
     }
 
     public void verifyInvalidEmail() {
-        herokuActions.verifyInvalidEmail();
-    }
-
-    public void verifyNewUserRegistration() {
+        clickOn(By.xpath("//h1[@class='space-top text-center']"));
+        //herokuActions.verifyInvalidEmail();
+        actionsMove(emailFieldReg);
         try {
-            Thread.sleep(5000);
-            String text = getTextFromElement(alert);
-            String newUser = "New User is Registered";
-            Assert.assertEquals(text, newUser, "The registration is not complete, as Account with that email address already exists.");
-
+            Thread.sleep(10000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
+        verifyInvalidEmail();
+        //System.out.println("Text" + verifyInvalidEmail());
     }
+
+    public void verifyNewUserRegistration() {
+        clickOn(userIcon);
+        String buttonText = getTextFromElement(userName);
+        String text = "testuser";
+        Assert.assertEquals(buttonText, text, "The new user is not sighed-in");
+    }
+
     public void clickOnSighIn() {
         clickOn(signInButton);
     }

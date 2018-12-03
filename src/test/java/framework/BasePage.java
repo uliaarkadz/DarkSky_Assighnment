@@ -1,12 +1,17 @@
 package framework;
 
+import java.time.Duration;
 import java.util.*;
+
+import com.github.javafaker.Faker;
 import org.openqa.selenium.*;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import stepdefinition.SharedSD;
+
+import static java.time.Duration.ofSeconds;
 
 public class BasePage {
 
@@ -102,15 +107,61 @@ public class BasePage {
         }
 
     }
+    public void actionsMove(By locator) {
+        try {
+            Actions actions = new Actions(SharedSD.getDriver());
+            //actions.perform();
+            actions.moveToElement(SharedSD.getDriver().findElement(locator));
+            //actions.pause(ofSeconds(6));
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+    }
 
     public int getElementsCount(By locator) {
         List<WebElement> list = SharedSD.getDriver().findElements(locator);
         int sizeOfElements = list.size();
         return sizeOfElements;
-
     }
 
+    public List<String> getContainerElements(By locator, String parameter) {
 
+        List<WebElement> listOfElements = SharedSD.getDriver().findElements(locator);
+        List<String> allElements = new ArrayList<String>();
+        for (WebElement option : listOfElements) {
+            String element = option.getText();
+            allElements.add(element);
+        }
+        List<String> allElementMod = new ArrayList<String>();
+        allElementMod.addAll(allElements);
+        Iterator<String> i = allElementMod.iterator();
+        while (i.hasNext()) {
+            String o = i.next();
+            if (o.equals(parameter))
+                i.remove();
+        }
+        return allElements;
+    }
+
+    public List<String>  getAttributeFromElement(By locator, String parameter) {
+        List<WebElement> listOfElements1 = SharedSD.getDriver().findElements(locator);
+        List<String> newElements = new ArrayList<String>();
+        for (WebElement option : listOfElements1) {
+            String element = option.getAttribute("src");
+            newElements.add(element);
+            if (element.equals(parameter)) {
+                newElements.remove(element);
+            }
+        }return newElements;
+
+    }
+    public String generateRandomName(){
+        Faker faker = new Faker();
+        String randomName = faker.internet().emailAddress();
+    return randomName;
+    }
 }
 
 

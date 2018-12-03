@@ -16,7 +16,8 @@ public class DarkSkyLandingPage extends BasePage {
     private By todaysTimeline = By.xpath("//body[@class='forecast']/div[@id='week']/a[1]/span[3]/span[1]/*[1]");
     private By lowTempToday = By.xpath("//div[@class='dayDetails revealed']//span[@class='highTemp swip']//span[@class='temp']");
     private By highTempToday = By.xpath("/html[1]/body[1]/div[6]/a[1]/span[2]/span[3]");
-
+    private By timeMachene = By.xpath("//a[@class='button']");
+    private By dates = By.xpath("//td[@data-day]");
 
     //a[@class='day revealed']//span[@class='tempRange']//span[@class='minTemp']
 
@@ -78,5 +79,13 @@ public class DarkSkyLandingPage extends BasePage {
 
         Assert.assertTrue(tempLowToday == tempLowTimeline
                 || tempHighTimeline == tempHighToday, "Lowest and highest temp is displayed correctly");
+    }
+
+    public void clickOnTimeMachine(){
+        clickOn(timeMachene);
+    }
+    public void verifyDateTimeMachine() throws InterruptedException {
+        scrollOnThePage();
+        calendarActions.dateVerification(dates);
     }
 }
