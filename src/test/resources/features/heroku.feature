@@ -1,4 +1,4 @@
-
+#@regression
 
 Feature: Verify auto complete search result
 
@@ -16,7 +16,7 @@ Feature: Verify auto complete search result
   @heroku-count
   Scenario: Verify total number of posts on home page (heroku)
 
-#  Given I am on heroku home page
+  Given I am on heroku home page
 
     Then I verify 94 total post is displayed
     And I verify all post has price tag

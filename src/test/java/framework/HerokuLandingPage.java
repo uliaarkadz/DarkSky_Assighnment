@@ -1,12 +1,10 @@
 package framework;
 
-import com.github.javafaker.Faker;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import ru.yandex.qatools.allure.annotations.Step;
 
-import java.util.List;
+import java.io.IOException;
 
 public class HerokuLandingPage extends BasePage {
 
@@ -29,7 +27,6 @@ public class HerokuLandingPage extends BasePage {
     private By userIcon = By.xpath("//body/nav[@class='navbar navbar-default navbar-static-top']/div[@class='container']/div[@id='bs-example-navbar-collapse-1']/ul[@class='nav navbar-nav navbar-right']/li[3]/a[1]");
     private By logOutButton = By.xpath("//ul[@class='dropdown-menu']//li[3]");
 
-
     @Step
     public void clickOnSearchBar() {
         clickOn(topBar);
@@ -39,29 +36,30 @@ public class HerokuLandingPage extends BasePage {
         sendText(topBar, text);
     }
 
-    public void verifySearchText(String title) {
+    public String getSearchText() {
         actions(autocomplete);
-        String titleFromWeb = getTextFromElement(autocomplete);
-        Assert.assertEquals(titleFromWeb, title, "The search text is wrong");
+
+        return  getTextFromElement(autocomplete);
     }
 
-    public void verifyTotalNumberOfGigs(int gigs) {
-        Assert.assertEquals(getElementsCount(gigElements), gigs);
+    public int getTotalNumberOfGigs() {
+
+        return getElementsCount(gigElements);
     }
 
-    public void verifyPriceForEachGig() {
-        List<String> price = getContainerElements(priceElement, "$");
-        Assert.assertNotEquals(price.size(), getElementsCount(gigElements), "All gigs have price");
+    public int getPrice() {
+
+        return getContainerElements(priceElement, "$").size();
     }
 
-    public void verifyTitles() {
-        List<String> title = getContainerElements(postTitle, "");
-        Assert.assertNotEquals(title.size(), getElementsCount(gigElements), "All gigs have title");
+    public int getTitles() {
+
+        return getContainerElements(postTitle, "").size();
     }
 
-    public void verifyImages() {
-        List<String> images = getAttributeFromElement(postImage, "copywrite.jpg");
-        Assert.assertNotEquals(images.size(), getElementsCount(gigElements), "All post have image");
+    public int getImages() {
+
+        return getAttributeFromElement(postImage, "https://floating-anchorage-58495.herokuapp.com/img/copywrite.jpg").size();
     }
 
     public void clickOnJoinButton() {
@@ -86,23 +84,15 @@ public class HerokuLandingPage extends BasePage {
     }
 
     public void verifyInvalidEmail() {
-        clickOn(By.xpath("//h1[@class='space-top text-center']"));
-        //herokuActions.verifyInvalidEmail();
-        actionsMove(emailFieldReg);
-        try {
-            Thread.sleep(10000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        verifyInvalidEmail();
-        //System.out.println("Text" + verifyInvalidEmail());
+
     }
 
-    public void verifyNewUserRegistration() {
+    public boolean verifyNewUserRegistration() {
         clickOn(userIcon);
-        String buttonText = getTextFromElement(userName);
-        String text = "testuser";
-        Assert.assertEquals(buttonText, text, "The new user is not sighed-in");
+        String buttonText = getTextFromElement(logOutButton);
+        String text = "Logout";
+
+        return buttonText.equals(text);
     }
 
     public void clickOnSighIn() {
@@ -118,11 +108,13 @@ public class HerokuLandingPage extends BasePage {
         clickOn(submitButtonLogIn);
     }
 
-    public void verifyLogOuButton() throws InterruptedException {
+    public boolean verifyLogOuButton() throws InterruptedException {
         Thread.sleep(5000);
         clickOn(userIcon);
         String buttonText = getTextFromElement(logOutButton);
+        System.out.println("text" + buttonText);
         String text = "Logout";
-        Assert.assertEquals(buttonText, text, "The logout button is not displayed");
+
+        return buttonText.equals(text);
     }
 }

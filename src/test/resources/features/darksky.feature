@@ -1,3 +1,5 @@
+
+
 Feature: Verify current temperature
 
   Background:

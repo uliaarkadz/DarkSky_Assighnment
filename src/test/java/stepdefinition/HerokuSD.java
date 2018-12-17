@@ -4,10 +4,15 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import framework.HerokuLandingPage;
+import framework.ScreenShot;
 import org.testng.Assert;
 
+import java.io.IOException;
+
 public class HerokuSD {
+
     private HerokuLandingPage herokuLandingPage = new HerokuLandingPage();
+    private ScreenShot screenShot = new ScreenShot();
 
     @Given("^I am on heroku home page$")
 
@@ -23,27 +28,27 @@ public class HerokuSD {
 
     @Then("^I verify (.+) displayed as result$")
     public void verifySearchText(String title) {
-        herokuLandingPage.verifySearchText(title);
+        Assert.assertEquals(herokuLandingPage.getSearchText(), title, "The search text is wrong");
     }
 
     @Then("^I verify (.+) total post is displayed$")
     public void verifyTotalNumberOfPosts(int gigs) {
-        herokuLandingPage.verifyTotalNumberOfGigs(gigs);
+        Assert.assertEquals(herokuLandingPage.getTotalNumberOfGigs(), gigs);
     }
 
     @Then("^I verify all post has price tag$")
     public void verifyPrice() {
-        herokuLandingPage.verifyPriceForEachGig();
+        Assert.assertNotEquals(herokuLandingPage.getPrice(), herokuLandingPage.getTotalNumberOfGigs(),"All gigs have price");
     }
 
     @Then("^I verify all post has title$")
     public void verifyPrices() {
-        herokuLandingPage.verifyTitles();
+        Assert.assertNotEquals(herokuLandingPage.getTitles(), herokuLandingPage.getTotalNumberOfGigs(), "All gigs have title");
     }
 
     @Then("^I verify all post has displayed image$")
     public void verifyImages() {
-        herokuLandingPage.verifyImages();
+        Assert.assertNotEquals(herokuLandingPage.getImages(), herokuLandingPage.getTotalNumberOfGigs(), "All gig have image");
     }
 
     @Given("^I am on Registration page$")
@@ -68,19 +73,22 @@ public class HerokuSD {
 
     @Then("^I verify invalid email address$")
     public void verifyInvalidEmail() {
-        herokuLandingPage.verifyInvalidEmail();
+        try {
+            ScreenShot.takeScreenShot();
+        } catch (IOException e) {
+            e.printStackTrace ( );
+        }
     }
 
     @Then("^I am signed-in as a new user$")
     public void verifyNewUserRegistration() {
-        herokuLandingPage.verifyNewUserRegistration();
+        Assert.assertTrue(herokuLandingPage.verifyNewUserRegistration(), "The new user is not sighed-in");
     }
 
     @Given("^User is on the Threely login page$")
     public void goToLoginPage() {
         herokuLandingPage.clickOnSighIn();
     }
-
     @When("^I enter username as (.+) and password as (.+)$")
     public void enterLoginData(String email, String password) {
         herokuLandingPage.enterLoginData(email, password);
@@ -93,7 +101,7 @@ public class HerokuSD {
 
     @Then("^I verify logout button is displayed$")
     public void verifyLogOutButton() throws InterruptedException {
-        herokuLandingPage.verifyLogOuButton();
+        Assert.assertTrue(herokuLandingPage.verifyLogOuButton(), "The logout button is not displayed");
     }
 
 }
